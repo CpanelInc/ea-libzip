@@ -9,7 +9,7 @@
 
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
-Version: 1.61.0
+Version: 1.6.1
 %define release_prefix 1
 Release: %{release_prefix}%{?dist}.cpanel
 License: Unknown
@@ -19,8 +19,17 @@ Group: Applications/Internet
 Source: libzip-%{version}.tar.gz
 URL: https://github.com/nih-at/libzip
 BuildRoot: %{_tmppath}/%{pkg_name}-%{version}-%{release}-root
+Source1: Makefile
+Source2: parse_zip.pl
+Source3: zipconf.h_template
 
-BuildRequires: cmake3
+Requires: bzip2-libs
+Requires: zlib
+Requires: lzma
+Requires: ea-openssl11
+BuildRequires: xz-devel
+BuildRequires: ea-openssl11
+BuildRequires: ea-openssl11-devel
 
 %description
 This is libzip, a C library for reading, creating, and modifying zip and
@@ -31,19 +40,27 @@ of Winzip AES and decryption of legacy PKware encrypted files is
 supported. The API is documented by man pages.
 
 %prep
+%setup -q -n libzip-%{version}
 
 %build
-cmake3 .
-make
+cd lib
+cp %{SOURCE1} Makefile
+cp %{SOURCE2} parse_zip.pl
+cp %{SOURCE3} zipconf.h_template
+
+perl parse_zip.pl "%{version}"
+rm -f parse_zip.pl
+rm -f zipconf.h_template
+
+make all
 
 %install
-install -m 755 %{buildroot}/lib/libzip.so.5 %{_libdir}/libzip.so.5
-install -m 755 %{buildroot}/lib/libzip.so.5.1 %{_libdir}/libzip.so.5.1
+mkdir -p %{buildroot}%{_libdir}
+install -m 755 lib/libzip.so %{buildroot}%{_libdir}/libzip.so
 
 %files -n %{pkg_name}
 %defattr(-,root,root,-)
-%{_libdir}/libzip.so.5
-%{_libdir}/libzip.so.5.1
+%{_libdir}/libzip.so
 
 %changelog
 * Mon Feb 03 2020 Julian Brown <julian.brown@cpanel.net> - 1.61.0-1
