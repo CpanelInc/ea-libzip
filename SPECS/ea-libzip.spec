@@ -10,10 +10,10 @@
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
 Version: 1.6.1
+# Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
 %define release_prefix 1
 Release: %{release_prefix}%{?dist}.cpanel
-License: Unknown
-# https://github.com/nih-at/libzip/blob/master/LICENSE
+License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
 Group: Applications/Internet
 Source: libzip-%{version}.tar.gz
@@ -39,6 +39,13 @@ without closing the archive can be reverted. Decryption and encryption
 of Winzip AES and decryption of legacy PKware encrypted files is
 supported. The API is documented by man pages.
 
+%package devel
+Summary: Files for development of applications which will use ea-libzip
+Group: Development/Libraries
+
+%description devel
+The files needed for developing applications with ea-libzip.
+
 %prep
 %setup -q -n libzip-%{version}
 
@@ -56,11 +63,20 @@ make all
 
 %install
 mkdir -p %{buildroot}%{_libdir}
+mkdir -p %{buildroot}%{_libdir}/../include
+mkdir -p %{buildroot}/usr/include
 install -m 755 lib/libzip.so %{buildroot}%{_libdir}/libzip.so
+install -m 755 lib/zipconf.h %{buildroot}%{_libdir}/../include/zipconf.h
+install -m 755 lib/zipconf.h %{buildroot}/usr/include/zipconf.h
 
 %files -n %{pkg_name}
 %defattr(-,root,root,-)
 %{_libdir}/libzip.so
+
+%files -n %{pkg_name}-devel
+%defattr(-,root,root,-)
+%{_prefix}/include/zipconf.h
+/usr/include/zipconf.h
 
 %changelog
 * Mon Feb 03 2020 Julian Brown <julian.brown@cpanel.net> - 1.61.0-1

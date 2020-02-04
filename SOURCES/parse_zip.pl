@@ -19,26 +19,22 @@ if (open my $in, '<', 'zipconf.h_template') {
         while (<$in>) {
             chomp;
             if (m/^#define LIBZIP_VERSION /) {
-                print $out qq{#define LIBZIP_VERSION "$version"
-};
+                print ${out} qq{#define LIBZIP_VERSION "$version"\n};
                 next;
             }
 
             if (m/^#define LIBZIP_VERSION_MAJOR/) {
-                print $out qq{#define LIBZIP_VERSION_MAJOR $major
-};
+                print ${out} qq{#define LIBZIP_VERSION_MAJOR $major\n};
                 next;
             }
 
             if (m/^#define LIBZIP_VERSION_MINOR/) {
-                print $out qq{#define LIBZIP_VERSION_MINOR $minor
-};
+                print ${out} qq{#define LIBZIP_VERSION_MINOR $minor\n};
                 next;
             }
 
             if (m/^#define LIBZIP_VERSION_MICRO/) {
-                print $out qq{#define LIBZIP_VERSION_MICRO $micro
-};
+                print ${out} qq{#define LIBZIP_VERSION_MICRO $micro\n};
                 next;
             }
 
@@ -46,14 +42,6 @@ if (open my $in, '<', 'zipconf.h_template') {
         }
         close $in;
         close $out;
-
-# for debug
-if (open my $inx, '<', 'zipconf.h') {
-    while (<$inx>) {
-        print $_;
-    }
-    close $inx;
-}
     }
     else {
         die "Cannot open zipconf.h";
