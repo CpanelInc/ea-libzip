@@ -74,7 +74,6 @@ install -m 755 lib/zipconf.h %{buildroot}%{_libdir}/../include/zipconf.h
 %files -n %{pkg_name}-devel
 %defattr(-,root,root,-)
 %{_prefix}/include/zipconf.h
-/usr/include/zipconf.h
 
 %changelog
 * Mon Feb 03 2020 Julian Brown <julian.brown@cpanel.net> - 1.61.0-1
