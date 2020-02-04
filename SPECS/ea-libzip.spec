@@ -64,10 +64,8 @@ make all
 %install
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_libdir}/../include
-mkdir -p %{buildroot}/usr/include
 install -m 755 lib/libzip.so %{buildroot}%{_libdir}/libzip.so
 install -m 755 lib/zipconf.h %{buildroot}%{_libdir}/../include/zipconf.h
-install -m 755 lib/zipconf.h %{buildroot}/usr/include/zipconf.h
 
 %files -n %{pkg_name}
 %defattr(-,root,root,-)
