@@ -2,6 +2,7 @@
 CFLAGS := -Wall -g -I/opt/cpanel/ea-openssl11/include -I/usr/include -I. -DSIZEOF_OFF_T=8 -DHAVE_FSEEKO=1 -DHAVE_FTELLO=1 -DHAVE_OPENSSL -DHAVE_SECURE_RANDOM=1 -fPIC
 DEFS := $(DEFS)
 CC := gcc $(CFLAGS) $(INC) $(DEFS)
+AR := ar
 LDFLAGS := -lc -lm -lbz2 -lz -llzma -L/opt/cpanel/ea-openssl11/lib -lcrypto -lssl
 
 HEADERS = \
@@ -256,10 +257,12 @@ zip_winzip_aes.o: zip_winzip_aes.c $(HEADERS)
 clean:
 	rm -f *.o
 	rm -f *.so
+	rm -f *.a
 
 libzip.so: $(OBJS)
 #	$(LD) -o libzip.so $(OBJS) $(LDFLAGS)
 	$(CC) -shared -o libzip.so $(OBJS) $(LDFLAGS)
+	$(AR) rcs libzip.a $(OBJS)
 
 all: libzip.so
 
