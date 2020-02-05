@@ -1,11 +1,11 @@
 %define ns_prefix ea
 %define pkg_base  libzip
 %define pkg_name  %{ns_prefix}-%{pkg_base}
-%define _prefix   /opt/cpanel/%{pkg_base}
-%define prefix_dir /opt/cpanel/%{pkg_base}
-%define prefix_lib %{prefix_dir}/%{_lib}
-%define prefix_bin %{prefix_dir}/bin
-%define prefix_inc %{prefix_dir}/include
+%define _prefix   /opt/cpanel/%{ns_prefix}-%{pkg_base}
+%define prefix_dir /opt/cpanel/%{ns_prefix}-%{pkg_base}
+%define prefix_lib %{ns_prefix}-%{prefix_dir}/%{_lib}
+%define prefix_bin %{ns_prefix}-%{prefix_dir}/bin
+%define prefix_inc %{ns_prefix}-%{prefix_dir}/include
 
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
@@ -69,6 +69,8 @@ install -m 755 lib/libzip.a %{buildroot}%{_libdir}/libzip.a
 install -m 755 lib/zipconf.h %{buildroot}%{_libdir}/../include/zipconf.h
 install -m 755 lib/zip.h %{buildroot}%{_libdir}/../include/zip.h
 
+echo "INSTALL " %{_libdir}
+
 %files -n %{pkg_name}
 %defattr(-,root,root,-)
 %{_libdir}/libzip.so
@@ -80,6 +82,6 @@ install -m 755 lib/zip.h %{buildroot}%{_libdir}/../include/zip.h
 %{_prefix}/include/zip.h
 
 %changelog
-* Mon Feb 03 2020 Julian Brown <julian.brown@cpanel.net> - 1.61.0-1
+* Wed Feb 05 2020 Julian Brown <julian.brown@cpanel.net> - 1.61.0-1
 - ZC-6083: Create ea-libzip package.
 

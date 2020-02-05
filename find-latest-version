@@ -1,44 +1,64 @@
 #!/usr/local/cpanel/3rdparty/bin/perl
-# cpanel - find-latest-version                  Copyright(c) 2020 cPanel, L.L.C.
+# cpanel - find-latest-version                  Copyright(c) 2019 cPanel, L.L.C.
 #                                                           All rights Reserved.
 # copyright@cpanel.net                                         http://cpanel.net
 # This code is subject to the cPanel license. Unauthorized copying is prohibited
 
-package ea_repo_name_goes_here::find_latest_version;
+package ea_libzip::find_latest_version;
 
 use strict;
 use warnings;
 
+use Cpanel::JSON::XS;
+
 use lib "../ea-tools/lib/ea4_tool";    # assumes ea-tools is checked out next to this repo
 use ea4_tool::util ();
-
-ea4_tool::util::find_latest_version(\&_get_required, \&_add_sum) if !caller();
 
 ###############
 #### helpers ##
 ###############
 
 sub _get_required {
-   my ($http) = @_;
+    my ($http) = @_;
 
-   my ( $version, $url, $name );
+    my ( $version, $url, $name );
 
-   my $res  = $http->get("https://repo.example.org/releases");
-   # get $version, $url, $name from $res (and possibly multiple HTTP calls)
-   # die if there is a problem determining any of those values
+    my $res = $http->get("https://api.github.com/repos/nih-at/libzip/tags");
 
-   return ( $version, $url, $name );
+    my $tag_refs = Cpanel::JSON::Load( $res->content );
+    my $tag;
+
+    foreach my $tag_ref ( @{$tag_refs} ) {
+        if ( !defined $tag ) {
+            $tag = $tag_ref;
+            next;
+        }
+
+        if ( $tag_ref->{name} gt $tag->{name} ) {
+            $tag = $tag_ref;
+            next;
+        }
+    }
+
+    die "Cannot find latest version" if !defined $tag;
+
+    $name    = $tag->{'name'};
+    $version = substr( $name, 4 );
+    $version =~ s/\-/./g;
+    $url = "https://github.com/nih-at/libzip/releases/download/rel-1-6-1/libzip-$version.tar.gz";
+
+    return ( $version, $url, $name );
 }
 
 sub _add_sum {
-    my ($http, $hr) = @_;
+    my ( $http, $hr ) = @_;
 
-    # Optional: Set $hr->{tarball}{sum}{hex} and $hr->{tarball}{sum}{type} (sha256, sha1, md5, anythign Digest.pm can handle)
-    #           die if there is a problem determining either of those values
-    # otherwise this is a no-op
+    # I could not find a way to get the sum
 
     return;
 }
+
+ea4_tool::util::find_latest_version( \&_get_required, \&_add_sum ) if !caller();
 
 __END__
 
@@ -46,4 +66,5 @@ __END__
 
 =head1 README
 
-… explain nuances of fetching the latest-info for this repo here for future us …
+This is a Github project.  The latest version is listed as a tag in the project.
+
