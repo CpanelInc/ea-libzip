@@ -3,7 +3,7 @@ CFLAGS := -Wall -g -I/opt/cpanel/ea-openssl11/include -I/usr/include -I. -DSIZEO
 DEFS := $(DEFS)
 CC := gcc $(CFLAGS) $(INC) $(DEFS)
 AR := ar
-LDFLAGS := -lc -lm -lbz2 -lz -llzma -L/opt/cpanel/ea-openssl11/lib -lcrypto -lssl
+LDFLAGS := -lc -lm -lbz2 -lz -Wl,-rpath,'/opt/cpanel/ea-openssl11/lib' -llzma -L/opt/cpanel/ea-openssl11/lib -lcrypto -lssl
 
 HEADERS = \
     compat.h \
@@ -129,10 +129,6 @@ OBJS = \
     zip_unchange.o \
     zip_unchange_data.o \
     zip_utf-8.o \
-
-#    zip_source_winzip_aes_decode.o \
-#    zip_source_winzip_aes_encode.o \
-#    zip_winzip_aes.o \
 
 %.o : %.c
 	$(CC) -c $(CFLAGS) $*.c 
@@ -260,7 +256,6 @@ clean:
 	rm -f *.a
 
 libzip.so: $(OBJS)
-#	$(LD) -o libzip.so $(OBJS) $(LDFLAGS)
 	$(CC) -shared -o libzip.so $(OBJS) $(LDFLAGS)
 	$(AR) rcs libzip.a $(OBJS)
 
