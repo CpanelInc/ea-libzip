@@ -1,0 +1,27 @@
+From a532613f1db8f00cae4d354270e3f9e370ab77cc Mon Sep 17 00:00:00 2001
+From: Julian Brown <julian.brown@cpanel.net>
+Date: Mon, 16 Mar 2020 15:35:45 -0500
+Subject: [PATCH] We use CMake3 for this build, update the make file.
+
+---
+ regress/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/regress/CMakeLists.txt b/regress/CMakeLists.txt
+index 47c25d8..a61549f 100644
+--- a/regress/CMakeLists.txt
++++ b/regress/CMakeLists.txt
+@@ -49,8 +49,8 @@ ADD_CUSTOM_TARGET(cleanup
+ ADD_CUSTOM_TARGET(testinput
+   ALL
+   VERBATIM
+-  COMMAND cmake -E tar x ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip
+-  COMMAND cmake -E tar x ${CMAKE_CURRENT_SOURCE_DIR}/bigzero-zip.zip
++  COMMAND cmake3 -E tar x ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip
++  COMMAND cmake3 -E tar x ${CMAKE_CURRENT_SOURCE_DIR}/bigzero-zip.zip
+   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip ${CMAKE_CURRENT_SOURCE_DIR}/bigzero-zip.zip
+ )
+ 
+-- 
+2.25.1
+
