@@ -49,7 +49,7 @@ The files needed for developing applications with ea-libzip.
 %prep
 %setup -q -n libzip-%{version}
 
-+%patch01 -p1
+%patch01 -p1
 
 %build
 
