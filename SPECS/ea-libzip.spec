@@ -11,7 +11,7 @@ Summary: A C library for reading, creating, and modifying zip and zip64 archives
 Name: %{pkg_name}
 Version: 1.6.1
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -82,6 +82,9 @@ echo "INSTALL " %{_libdir}
 %{_prefix}/include/zip.h
 
 %changelog
+* Tue Mar 17 2020 Julian Brown <julian.brown@cpanel.net> - 1.6.1-2
+- ZC-6348: Remove jury rigged build system
+
 * Wed Feb 05 2020 Julian Brown <julian.brown@cpanel.net> - 1.61.0-1
 - ZC-6083: Create ea-libzip package.
 
