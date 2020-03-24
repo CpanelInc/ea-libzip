@@ -53,6 +53,8 @@ The files needed for developing applications with ea-libzip.
 
 %build
 
+export OPENSSL_ROOT_DIR=/opt/cpanel/ea-openssl11
+export OPENSSL_LIBRARIES=/opt/cpanel/ea-openssl11/lib
 cmake3 .
 make
 
