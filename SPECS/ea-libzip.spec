@@ -65,6 +65,11 @@ install -m 755 lib/libzip.so %{buildroot}%{_libdir}/libzip.so
 install -m 755 zipconf.h %{buildroot}%{_libdir}/../include/zipconf.h
 install -m 755 lib/zip.h %{buildroot}%{_libdir}/../include/zip.h
 
+echo "LIBZIP LIB"
+ls -ld lib/*
+echo "LIBZIP include"
+ls -ld *
+
 %files -n %{pkg_name}
 %defattr(-,root,root,-)
 %{_libdir}/libzip.so
