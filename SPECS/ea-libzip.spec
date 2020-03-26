@@ -68,8 +68,6 @@ make
 %install
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_libdir}/../include
-%define lib_major_version 5
-%define lib_minor_version 1
 install -m 755 zipconf.h %{buildroot}%{_libdir}/../include/zipconf.h
 install -m 755 lib/zip.h %{buildroot}%{_libdir}/../include/zip.h
 
