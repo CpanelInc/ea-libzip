@@ -7,11 +7,18 @@
 %define prefix_bin %{ns_prefix}-%{prefix_dir}/bin
 %define prefix_inc %{ns_prefix}-%{prefix_dir}/include
 
+# I could not find any rhyme or reason for why the lib
+# version is 5.1, while the libzip package is version 1.6.1
+# so this may break in the future
+
+%define lib_major_version 5
+%define lib_minor_version 1
+
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
 Version: 1.6.1
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 2
+%define release_prefix 3
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -61,17 +68,21 @@ make
 %install
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_libdir}/../include
-install -m 755 lib/libzip.so %{buildroot}%{_libdir}/libzip.so
+%define lib_major_version 5
+%define lib_minor_version 1
 install -m 755 zipconf.h %{buildroot}%{_libdir}/../include/zipconf.h
 install -m 755 lib/zip.h %{buildroot}%{_libdir}/../include/zip.h
 
-echo "LIBZIP LIB"
-ls -ld lib/*
-echo "LIBZIP include"
-ls -ld *
+cd lib
+install -m 755 libzip.so.%{lib_major_version}.%{lib_minor_version} %{buildroot}%{_libdir}/libzip.so.%{lib_major_version}.%{lib_minor_version}
+ln -s libzip.so.%{lib_major_version}.%{lib_minor_version} %{buildroot}%{_libdir}/libzip.so.%{lib_major_version}
+ln -s libzip.so.%{lib_major_version}.%{lib_minor_version} %{buildroot}%{_libdir}/libzip.so
+cd ..
 
 %files -n %{pkg_name}
 %defattr(-,root,root,-)
+%{_libdir}/libzip.so.%{lib_major_version}.%{lib_minor_version}
+%{_libdir}/libzip.so.%{lib_major_version}
 %{_libdir}/libzip.so
 
 %files -n %{pkg_name}-devel
@@ -80,6 +91,9 @@ ls -ld *
 %{_prefix}/include/zip.h
 
 %changelog
+* Thu Mar 26 2020 Julian Brown <julian.brown@cpanel.net> - 1.6.1-3
+- ZC-6449: Was not generating all the libzip.so variants.
+
 * Tue Mar 17 2020 Julian Brown <julian.brown@cpanel.net> - 1.6.1-2
 - ZC-6348: Remove jury rigged build system
 
