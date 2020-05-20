@@ -7,6 +7,10 @@
 %define prefix_bin %{ns_prefix}-%{prefix_dir}/bin
 %define prefix_inc %{ns_prefix}-%{prefix_dir}/include
 
+%if 0%{rhel} > 7
+%global debug_package %{nil}
+%endif
+
 # I could not find any rhyme or reason for why the lib
 # version is 5.1, while the libzip package is version 1.6.1
 # so this may break in the future
@@ -32,11 +36,19 @@ Requires: bzip2-libs
 Requires: zlib
 Requires: lzma
 Requires: ea-openssl11
-Requires: xz-lzma-compat
+
 BuildRequires: xz-devel
 BuildRequires: ea-openssl11
 BuildRequires: ea-openssl11-devel
 BuildRequires: cmake3
+
+%if 0%{rhel} > 7
+# dependencry for cmake3
+BuildRequires: brotli
+
+# there is an unspecified requires: libcurl, that needs libnghttp2
+BuildRequires: libcurl libnghttp2
+%endif
 
 %description
 This is libzip, a C library for reading, creating, and modifying zip and
