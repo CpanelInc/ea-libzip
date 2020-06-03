@@ -34,7 +34,12 @@ BuildRoot: %{_tmppath}/%{pkg_name}-%{version}-%{release}-root
 
 Requires: bzip2-libs
 Requires: zlib
+%if 0%{rhel} > 7
+# liblzma.so.5 is owned by this rpm
+Requires: xz xz-libs
+%else
 Requires: lzma
+%endif
 Requires: ea-openssl11
 
 BuildRequires: xz-devel
