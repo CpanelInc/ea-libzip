@@ -32,6 +32,7 @@ Requires: bzip2-libs
 Requires: zlib
 Requires: lzma
 Requires: ea-openssl11
+Requires: xz-lzma-compat
 BuildRequires: xz-devel
 BuildRequires: ea-openssl11
 BuildRequires: ea-openssl11-devel
