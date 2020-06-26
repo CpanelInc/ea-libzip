@@ -46,6 +46,7 @@ sub _get_required {
     $version = substr( $name, 1);
     $version =~ s/\-/./g;
     $url = "https://github.com/nih-at/libzip/releases/download/$name/libzip-$version.tar.gz";
+    $name = "libzip-$version.tar.gz";
 
     return ( $version, $url, $name );
 }
