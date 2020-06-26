@@ -43,8 +43,8 @@ sub _get_required {
     die "Cannot find latest version" if !defined $tag;
 
     $name    = $tag->{'name'};
-    $version = $name;
-    $version =~ s/v//;
+    $version = substr( $name, 1);
+    $version =~ s/\-/./g;
     $url = "https://github.com/nih-at/libzip/releases/download/$name/libzip-$version.tar.gz";
 
     return ( $version, $url, $name );
