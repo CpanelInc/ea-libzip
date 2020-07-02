@@ -7,6 +7,10 @@
 %define prefix_bin %{ns_prefix}-%{prefix_dir}/bin
 %define prefix_inc %{ns_prefix}-%{prefix_dir}/include
 
+%if 0%{rhel} > 7
+%global debug_package %{nil}
+%endif
+
 # I could not find any rhyme or reason for why the lib
 # version is 5.1, while the libzip package is version 1.6.1
 # so this may break in the future
@@ -19,7 +23,7 @@ Summary: A C library for reading, creating, and modifying zip and zip64 archives
 Name: %{pkg_name}
 Version: 1.7.1
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -30,13 +34,26 @@ BuildRoot: %{_tmppath}/%{pkg_name}-%{version}-%{release}-root
 
 Requires: bzip2-libs
 Requires: zlib
+%if 0%{rhel} > 7
+# liblzma.so.5 is owned by this rpm
+Requires: xz xz-libs
+%else
 Requires: lzma
+%endif
 Requires: ea-openssl11
-Requires: xz-lzma-compat
+
 BuildRequires: xz-devel
 BuildRequires: ea-openssl11
 BuildRequires: ea-openssl11-devel
 BuildRequires: cmake3
+
+%if 0%{rhel} > 7
+# dependencry for cmake3
+BuildRequires: brotli
+
+# there is an unspecified requires: libcurl, that needs libnghttp2
+BuildRequires: libcurl libnghttp2
+%endif
 
 %description
 This is libzip, a C library for reading, creating, and modifying zip and
@@ -88,6 +105,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Mon Jun 29 2020 Julian Brown <julian.brown@cpanel.net> - 1.7.1-2
+- ZC-6844: ea-libzip fix problems for CentOS 8
+
 * Fri Jun 26 2020 Cory McIntire <cory@cpanel.net> - 1.7.1-1
 - EA-9127: Update ea-libzip from v1.7.0 to v1.7.1
 
