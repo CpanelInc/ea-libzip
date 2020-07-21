@@ -79,7 +79,7 @@ export OPENSSL_ROOT_DIR=/opt/cpanel/ea-openssl11
 export OPENSSL_LIBRARIES=/opt/cpanel/ea-openssl11/lib
 export CMAKE_COMMAND=cmake3
 cmake3 .
-perl -pi -e 's{-rpath,/opt/cpanel/ea-openssl11/lib:}{-rpath,/opt/cpanel/ea-openssl11/lib}' ./lib/CMakeFiles/zip.dir/link.txt
+perl -pi -e 's{-rpath,/opt/cpanel/ea-openssl11/lib(\d*):}{-rpath,/opt/cpanel/ea-openssl11/lib$1}' ./lib/CMakeFiles/zip.dir/link.txt
 make
 
 %install
