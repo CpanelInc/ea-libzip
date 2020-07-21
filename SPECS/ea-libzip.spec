@@ -23,7 +23,7 @@ Summary: A C library for reading, creating, and modifying zip and zip64 archives
 Name: %{pkg_name}
 Version: 1.7.1
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 2
+%define release_prefix 3
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -79,6 +79,7 @@ export OPENSSL_ROOT_DIR=/opt/cpanel/ea-openssl11
 export OPENSSL_LIBRARIES=/opt/cpanel/ea-openssl11/lib
 export CMAKE_COMMAND=cmake3
 cmake3 .
+perl -pi -e 's{-rpath,/opt/cpanel/ea-openssl11/lib(\d*):}{-rpath,/opt/cpanel/ea-openssl11/lib$1}' ./lib/CMakeFiles/zip.dir/link.txt
 make
 
 %install
@@ -105,6 +106,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Fri Jul 17 2020 Tim Mullin <tim@cpanel.net> - 1.7.1-3
+- EA-9178: Remove trailing colon from library's RPATH
+
 * Mon Jun 29 2020 Julian Brown <julian.brown@cpanel.net> - 1.7.1-2
 - ZC-6844: ea-libzip fix problems for CentOS 8
 
