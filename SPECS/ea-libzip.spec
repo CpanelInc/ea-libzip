@@ -23,7 +23,7 @@ Summary: A C library for reading, creating, and modifying zip and zip64 archives
 Name: %{pkg_name}
 Version: 1.7.1
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 3
+%define release_prefix 4
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -31,6 +31,8 @@ Group: Applications/Internet
 Source: libzip-%{version}.tar.gz
 URL: https://github.com/nih-at/libzip
 BuildRoot: %{_tmppath}/%{pkg_name}-%{version}-%{release}-root
+
+Patch1: 0001-Override-RPATH-for-zip-target.patch
 
 Requires: bzip2-libs
 Requires: zlib
@@ -72,14 +74,15 @@ The files needed for developing applications with ea-libzip.
 
 %prep
 %setup -q -n libzip-%{version}
+%patch1 -p1 -b .rpath
 
 %build
 
 export OPENSSL_ROOT_DIR=/opt/cpanel/ea-openssl11
 export OPENSSL_LIBRARIES=/opt/cpanel/ea-openssl11/lib
+export CPANEL_LIBZIP_RPATH=/opt/cpanel/ea-openssl11/lib
 export CMAKE_COMMAND=cmake3
 cmake3 .
-perl -pi -e 's{-rpath,/opt/cpanel/ea-openssl11/lib(\d*):}{-rpath,/opt/cpanel/ea-openssl11/lib$1}' ./lib/CMakeFiles/zip.dir/link.txt
 make
 
 %install
@@ -106,6 +109,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Thu Jul 23 2020 Tim Mullin <tim@cpanel.net> - 1.7.1-4
+- EA-9181: Patch CMakeLists file so the RPATH does not end with a colon
+
 * Fri Jul 17 2020 Tim Mullin <tim@cpanel.net> - 1.7.1-3
 - EA-9178: Remove trailing colon from library's RPATH
 
