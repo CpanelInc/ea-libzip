@@ -21,9 +21,9 @@
 
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
-Version: 1.7.1
+Version: 1.7.3
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 4
+%define release_prefix 1
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -109,6 +109,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Mon Aug 03 2020 Cory McIntire <cory@cpanel.net> - 1.7.3-1
+- EA-9209: Update ea-libzip from v1.7.1 to v1.7.3
+
 * Thu Jul 23 2020 Tim Mullin <tim@cpanel.net> - 1.7.1-4
 - EA-9181: Patch CMakeLists file so the RPATH does not end with a colon
 
