@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Tim Mullin <tim@cpanel.net>
-Date: Thu, 23 Jul 2020 20:13:41 -0500
+Date: Mon, 3 Aug 2020 10:46:46 -0500
 Subject: [PATCH] Override RPATH for zip target
 
 Case EA-9181:
@@ -15,15 +15,15 @@ explicitly provide.
  1 file changed, 2 insertions(+)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 6e35082..ef0f8f6 100644
+index 017f7cf..02c23ac 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -350,6 +350,8 @@ IF(LIBZIP_DO_INSTALL)
-   INSTALL(FILES ${PROJECT_BINARY_DIR}/libzip.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
- ENDIF()
+@@ -308,6 +308,8 @@ if(LIBZIP_DO_INSTALL)
+   install(FILES ${PROJECT_BINARY_DIR}/libzip.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+ endif()
  
 +set_target_properties(zip PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH $ENV{CPANEL_LIBZIP_RPATH})
 +
  # fixed size integral types
  
- IF(HAVE_INTTYPES_H_LIBZIP)
+ if(HAVE_INTTYPES_H_LIBZIP)
