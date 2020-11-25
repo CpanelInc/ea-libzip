@@ -43,6 +43,7 @@ Requires: xz xz-libs
 Requires: lzma
 %endif
 
+BuildRequires: libuv
 BuildRequires: xz-devel
 BuildRequires: cmake3
 
