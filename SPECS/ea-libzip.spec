@@ -23,7 +23,7 @@ Summary: A C library for reading, creating, and modifying zip and zip64 archives
 Name: %{pkg_name}
 Version: 1.7.3
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -42,12 +42,21 @@ Requires: xz xz-libs
 %else
 Requires: lzma
 %endif
-Requires: ea-openssl11
 
+BuildRequires: libuv
 BuildRequires: xz-devel
+BuildRequires: cmake3
+
+%if 0%{rhel} < 8
 BuildRequires: ea-openssl11
 BuildRequires: ea-openssl11-devel
-BuildRequires: cmake3
+Requires: ea-openssl11
+%else
+# In C8 we use system openssl. See DESIGN.md in ea-openssl11 git repo for details
+BuildRequires: openssl
+BuildRequires: openssl-devel
+Requires: openssl
+%endif
 
 %if 0%{rhel} > 7
 # dependencry for cmake3
@@ -74,15 +83,21 @@ The files needed for developing applications with ea-libzip.
 
 %prep
 %setup -q -n libzip-%{version}
+%if 0%{rhel} < 8
 %patch1 -p1 -b .rpath
+%endif
 
 %build
 
+%if 0%{rhel} < 8
 export OPENSSL_ROOT_DIR=/opt/cpanel/ea-openssl11
 export OPENSSL_LIBRARIES=/opt/cpanel/ea-openssl11/lib
 export CPANEL_LIBZIP_RPATH=/opt/cpanel/ea-openssl11/lib
+%endif
+
 export CMAKE_COMMAND=cmake3
 cmake3 .
+
 make
 
 %install
@@ -109,6 +124,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Tue Nov 24 2020 Julian Brown <julian.brown@cpanel.net> - 1.7.3-2
+- ZC-8005: Replace ea-openssl11 with system openssl on C8
+
 * Mon Aug 03 2020 Cory McIntire <cory@cpanel.net> - 1.7.3-1
 - EA-9209: Update ea-libzip from v1.7.1 to v1.7.3
 
