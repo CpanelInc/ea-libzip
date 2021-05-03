@@ -23,7 +23,7 @@ Summary: A C library for reading, creating, and modifying zip and zip64 archives
 Name: %{pkg_name}
 Version: 1.7.3
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 2
+%define release_prefix 3
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -36,12 +36,9 @@ Patch1: 0001-Override-RPATH-for-zip-target.patch
 
 Requires: bzip2-libs
 Requires: zlib
-%if 0%{rhel} > 7
+
 # liblzma.so.5 is owned by this rpm
 Requires: xz xz-libs
-%else
-Requires: lzma
-%endif
 
 BuildRequires: libuv
 BuildRequires: xz-devel
@@ -124,6 +121,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Mon May 03 2021 Travis Holloway <t.holloway@cpanel.net> - 1.7.3-3
+- EA-9654: Require xz and xz-libs instead of lzma
+
 * Tue Nov 24 2020 Julian Brown <julian.brown@cpanel.net> - 1.7.3-2
 - ZC-8005: Replace ea-openssl11 with system openssl on C8
 
