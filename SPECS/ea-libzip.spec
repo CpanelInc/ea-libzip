@@ -14,10 +14,10 @@
 # I could not find any rhyme or reason for why the lib
 # version is 5.1, while the libzip package is version 1.6.1
 # so this may break in the future
-# And, now with version 1.7.0, this changes to 5.3.
+# And, now with version 1.8.0, this changes to 5.4.
 
 %define lib_major_version 5
-%define lib_minor_version 3
+%define lib_minor_version 4
 
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
