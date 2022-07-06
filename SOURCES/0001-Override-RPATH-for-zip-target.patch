@@ -15,7 +15,7 @@ explicitly provide.
  1 file changed, 2 insertions(+)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 1363430..6f8ca1d 100644
+index d00a4f9..a008157 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -311,6 +311,8 @@ if(LIBZIP_DO_INSTALL)
