@@ -7,10 +7,6 @@
 %define prefix_bin %{ns_prefix}-%{prefix_dir}/bin
 %define prefix_inc %{ns_prefix}-%{prefix_dir}/include
 
-%if 0%{rhel} > 7
-%global debug_package %{nil}
-%endif
-
 # I could not find any rhyme or reason for why the lib
 # version is 5.1, while the libzip package is version 1.6.1
 # so this may break in the future
@@ -23,7 +19,7 @@ Summary: A C library for reading, creating, and modifying zip and zip64 archives
 Name: %{pkg_name}
 Version: 1.9.2
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -121,6 +117,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Mon May 08 2023 Julian Brown <julian.brown@cpanel.net> - 1.9.2-2
+- ZC-10936: Clean up Makefile and remove debug-package-nil
+
 * Thu Jun 30 2022 Cory McIntire <cory@cpanel.net> - 1.9.2-1
 - EA-10807: Update ea-libzip from v1.9.0 to v1.9.2
 
