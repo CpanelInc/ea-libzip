@@ -9,8 +9,6 @@ package ea_libzip::find_latest_version;
 use strict;
 use warnings;
 
-use Cpanel::JSON::XS;
-
 use lib "../ea-tools/lib/ea4_tool";    # assumes ea-tools is checked out next to this repo
 use ea4_tool::util ();
 
@@ -25,7 +23,7 @@ sub _get_required {
 
     my $res = $http->get("https://api.github.com/repos/nih-at/libzip/tags");
 
-    my $tag_refs = Cpanel::JSON::Load( $res->content );
+    my $tag_refs = ea4_tool::util::json2ref( $res->content );
     my $tag;
 
     foreach my $tag_ref ( @{$tag_refs} ) {
@@ -43,9 +41,9 @@ sub _get_required {
     die "Cannot find latest version" if !defined $tag;
 
     $name    = $tag->{'name'};
-    $version = substr( $name, 1);
+    $version = substr( $name, 1 );
     $version =~ s/\-/./g;
-    $url = "https://github.com/nih-at/libzip/releases/download/$name/libzip-$version.tar.gz";
+    $url  = "https://github.com/nih-at/libzip/releases/download/$name/libzip-$version.tar.gz";
     $name = "libzip-$version.tar.gz";
 
     return ( $version, $url, $name );
