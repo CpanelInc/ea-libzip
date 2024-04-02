@@ -36,6 +36,13 @@ Requires: zlib
 # liblzma.so.5 is owned by this rpm
 Requires: xz xz-libs
 
+%if 0%{rhel} < 7
+BuildRequires: devtoolset-7-toolchain
+BuildRequires: devtoolset-7-libatomic-devel
+BuildRequires: devtoolset-7-gcc
+BuildRequires: devtoolset-7-gcc-c++
+%endif
+
 BuildRequires: libuv
 BuildRequires: xz-devel
 BuildRequires: cmake3
@@ -81,6 +88,10 @@ The files needed for developing applications with ea-libzip.
 %endif
 
 %build
+
+%if 0%{?rhel} < 7
+. /opt/rh/devtoolset-7/enable
+%endif
 
 %if 0%{rhel} < 8
 export OPENSSL_ROOT_DIR=/opt/cpanel/ea-openssl11
