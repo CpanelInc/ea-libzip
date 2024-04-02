@@ -29,12 +29,12 @@ sub _get_required {
     foreach my $tag_ref ( @{$tag_refs} ) {
         if ( !defined $tag ) {
             $tag = $tag_ref;
-            next;
+            last;
         }
 
         if ( $tag_ref->{name} gt $tag->{name} ) {
             $tag = $tag_ref;
-            next;
+            last;
         }
     }
 
