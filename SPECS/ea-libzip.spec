@@ -17,9 +17,9 @@
 
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
-Version: 1.9.2
+Version: 1.10.1
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 2
+%define release_prefix 1
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -35,6 +35,13 @@ Requires: zlib
 
 # liblzma.so.5 is owned by this rpm
 Requires: xz xz-libs
+
+%if 0%{rhel} < 7
+BuildRequires: devtoolset-7-toolchain
+BuildRequires: devtoolset-7-libatomic-devel
+BuildRequires: devtoolset-7-gcc
+BuildRequires: devtoolset-7-gcc-c++
+%endif
 
 BuildRequires: libuv
 BuildRequires: xz-devel
@@ -82,6 +89,10 @@ The files needed for developing applications with ea-libzip.
 
 %build
 
+%if 0%{?rhel} < 7
+. /opt/rh/devtoolset-7/enable
+%endif
+
 %if 0%{rhel} < 8
 export OPENSSL_ROOT_DIR=/opt/cpanel/ea-openssl11
 export OPENSSL_LIBRARIES=/opt/cpanel/ea-openssl11/lib
@@ -117,6 +128,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Tue Apr 02 2024 Dan Muey <dan@cpanel.net> - 1.10.1-1
+- EA-12064: Update ea-libzip from v1.9.2 to v1.10.1
+
 * Mon May 08 2023 Julian Brown <julian.brown@cpanel.net> - 1.9.2-2
 - ZC-10936: Clean up Makefile and remove debug-package-nil
 
