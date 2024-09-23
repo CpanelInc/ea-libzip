@@ -17,7 +17,7 @@
 
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
-Version: 1.10.1
+Version: 1.11
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
 %define release_prefix 1
 Release: %{release_prefix}%{?dist}.cpanel
@@ -128,6 +128,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Thu Sep 19 2024 Cory McIntire <cory@cpanel.net> - 1.11-1
+- EA-12397: Update ea-libzip from v1.10.1 to v1.11
+
 * Tue Apr 02 2024 Dan Muey <dan@cpanel.net> - 1.10.1-1
 - EA-12064: Update ea-libzip from v1.9.2 to v1.10.1
 
