@@ -17,9 +17,9 @@
 
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
-Version: 1.11
+Version: 1.10.1
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release: %{release_prefix}%{?dist}.cpanel
 License: https://github.com/nih-at/libzip/blob/master/LICENSE
 Vendor: cPanel, Inc.
@@ -128,6 +128,9 @@ cd ..
 %{_prefix}/include/zip.h
 
 %changelog
+* Mon Sep 23 2024 Cory McIntire <cory@cpanel.net> - 1.10-2
+- EA-12397: Rolling “ea-libzip” back to “a55dc085a3c6d8ccc95613a7f6acf4589fe405c2”: Version issues in happening in PHP compliations with this update
+
 * Thu Sep 19 2024 Cory McIntire <cory@cpanel.net> - 1.11-1
 - EA-12397: Update ea-libzip from v1.10.1 to v1.11
 
