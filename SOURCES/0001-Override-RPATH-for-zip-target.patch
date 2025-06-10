@@ -15,10 +15,10 @@ explicitly provide.
  1 file changed, 2 insertions(+)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 23e0f0f..ccff4c2 100644
+index b79873b..5ea53f8 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -373,6 +373,8 @@ if(LIBZIP_DO_INSTALL)
+@@ -370,6 +370,8 @@ if(LIBZIP_DO_INSTALL)
    install(FILES ${PROJECT_BINARY_DIR}/libzip.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
  endif()
  
