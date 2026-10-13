@@ -13,7 +13,7 @@
 # And, now with version 1.9.0, this changes to 5.5.
 
 %define lib_major_version 5
-%define lib_minor_version 5
+%define lib_minor_version 6
 
 Summary: A C library for reading, creating, and modifying zip and zip64 archives.
 Name: %{pkg_name}
