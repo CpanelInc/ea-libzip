@@ -100,7 +100,7 @@ export CPANEL_LIBZIP_RPATH=/opt/cpanel/ea-openssl11/lib
 %endif
 
 export CMAKE_COMMAND=cmake3
-cmake3 .
+cmake3 -DBUILD_OSSFUZZ=OFF .
 
 make
 
